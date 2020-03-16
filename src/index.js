@@ -11,6 +11,11 @@ const getAuthType = () => {
     .build();
 };
 
+const isAdminUser = () => {
+  const email = Session.getEffectiveUser().getEmail();
+  return email === 'gurzaf@gmail.com';
+};
+
 const getConfig = () => {
   const config = cc.getConfig();
 
@@ -22,7 +27,7 @@ const getConfig = () => {
   config
     .newTextInput()
     .setId('placeid')
-    .setName('Indique el ID del lugar')
+    .setName('ID del lugar')
     .setHelpText('Ejemplo: 24h3kj4hjghg43hg4gg')
     .setAllowOverride(true);
 
@@ -31,7 +36,7 @@ const getConfig = () => {
   return config.build();
 };
 
-const getSchema = () => {
+const getFields = () => {
   const fields = cc.getFields();
   const types = cc.FieldType;
 
@@ -73,7 +78,11 @@ const getSchema = () => {
   fields.setDefaultMetric(amount.getId());
   fields.setDefaultDimension(title.getId());
 
-  return { schema: fields.build() };
+  return fields;
+};
+
+const getSchema = () => {
+  return { schema: getFields().build() };
 };
 
 const fetchDataFromApi = () => {
@@ -82,28 +91,37 @@ const fetchDataFromApi = () => {
 
 const normalizeResponse = (request, responseString) => {
   const response = JSON.parse(responseString);
-  const { placeId } = request.configParams;
-  return response.filter(item => item.id === placeId);
+  const { placeid } = request.configParams;
+  const result = response.filter(item => item.id === placeid);
+  return result;
 };
 
 const getFormattedData = (response, requestedFields) => {
-  console.log(requestedFields);
-  return response;
+  const fields = requestedFields.asArray().map(item => item.getId());
+  const result = response.map(item => {
+    const values = [];
+    fields.forEach(field => {
+      values.push(item[field]);
+    });
+    return { values };
+  });
+  Logger.log(`Results: ${result.length} Fields: ${fields.length}`);
+  return result;
 };
 
 const getData = request => {
-  const requestedFields = cc.getFields().forIds(
+  const requestedFields = getFields().forIds(
     request.fields.map(field => {
       return field.name;
     })
   );
 
-  let data = [];
+  let rows = [];
 
   try {
     const apiResponse = fetchDataFromApi();
     const filteredResponse = normalizeResponse(request, apiResponse);
-    data = getFormattedData(filteredResponse, requestedFields);
+    rows = getFormattedData(filteredResponse, requestedFields);
   } catch (e) {
     cc.newUserError()
       .setDebugText(`Error fetching data from API. Exception details: ${e}`)
@@ -113,13 +131,31 @@ const getData = request => {
       .throwException();
   }
 
+  Logger.log(rows);
+
   return {
     schema: requestedFields.build(),
-    rows: data
+    rows
   };
 };
 
+const test = () => {
+  isAdminUser();
+  const request = {
+    fields: [{ name: 'title' }, { name: 'amount' }],
+    configParams: {
+      placeid: 'ZzrONfZh6Fdo3AXtxYqV'
+    }
+  };
+  getAuthType();
+  getConfig();
+  getSchema();
+  getData(request);
+};
+
+global.isAdminUser = isAdminUser;
 global.getAuthType = getAuthType;
 global.getConfig = getConfig;
 global.getSchema = getSchema;
 global.getData = getData;
+global.test = test;

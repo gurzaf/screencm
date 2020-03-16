@@ -1,13 +1,13 @@
 {
-  "name": "apps-script-starter",
-  "version": "4.5.0",
-  "description": "Setup a local development environment for Google Apps Script",
+  "name": "screencm",
+  "version": "0.0.1",
+  "description": "Maclic Screens Analytics Data Studio Connector",
   "author": {
-    "name": "Amit Agarwal",
-    "email": "amit@labnol.org",
-    "url": "https://www.labnol.org"
+    "name": "Julian Galvez",
+    "email": "contact@roldanilloeasy.com",
+    "url": "https://roldanilloeasy.com"
   },
-  "homepage": "https://digitalinspiration.com/",
+  "homepage": "https://roldanilloeasy.com",
   "license": "MIT",
   "main": "src/index.js",
   "scripts": {
@@ -18,11 +18,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/labnol/apps-script-starter.git"
+    "url": "git+https://github.com/gurzaf/screencm.git"
   },
   "keywords": [
     "google-apps-script",
-    "gsuite",
     "apps-script"
   ],
   "dependencies": {
