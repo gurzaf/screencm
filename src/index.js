@@ -39,6 +39,7 @@ const getConfig = () => {
 const getFields = () => {
   const fields = cc.getFields();
   const types = cc.FieldType;
+  const aggregations = cc.AggregationType;
 
   const title = fields
     .newDimension()
@@ -66,14 +67,16 @@ const getFields = () => {
     .setId('amount')
     .setName('Cantidad')
     .setDescription('Cantidad de registros')
-    .setType(types.NUMBER);
+    .setType(types.NUMBER)
+    .setAggregation(aggregations.SUM);
 
   fields
     .newMetric()
     .setId('users')
     .setName('Usuarios')
     .setDescription('Cantidad de usuarios')
-    .setType(types.NUMBER);
+    .setType(types.NUMBER)
+    .setAggregation(aggregations.SUM);
 
   fields.setDefaultMetric(amount.getId());
   fields.setDefaultDimension(title.getId());
@@ -110,6 +113,7 @@ const getFormattedData = (response, requestedFields) => {
 };
 
 const getData = request => {
+  Logger.log('Get Data...');
   const requestedFields = getFields().forIds(
     request.fields.map(field => {
       return field.name;
@@ -120,9 +124,14 @@ const getData = request => {
 
   try {
     const apiResponse = fetchDataFromApi();
+    Logger.log('API request...');
     const filteredResponse = normalizeResponse(request, apiResponse);
+    Logger.log('Filtered response...');
     rows = getFormattedData(filteredResponse, requestedFields);
+    Logger.log('Formatted response...');
   } catch (e) {
+    Logger.log('Error?');
+    Logger.log(e);
     cc.newUserError()
       .setDebugText(`Error fetching data from API. Exception details: ${e}`)
       .setText(
@@ -135,7 +144,8 @@ const getData = request => {
 
   return {
     schema: requestedFields.build(),
-    rows
+    rows,
+    filtersApplied: false
   };
 };
 
