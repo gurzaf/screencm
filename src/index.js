@@ -1,6 +1,6 @@
-import { key } from '../AUTH.json';
+import { key, baseUrl } from '../SCREENS_API.json';
 
-const URL = `https://us-central1-maclic-b4e9d.cloudfunctions.net/getScreensAnalytics?key=${key}`;
+const URL = `${baseUrl}?key=${key}`;
 const cc = DataStudioApp.createCommunityConnector();
 
 const getAuthType = () => {
@@ -108,12 +108,12 @@ const getFormattedData = (response, requestedFields) => {
     });
     return { values };
   });
-  Logger.log(`Results: ${result.length} Fields: ${fields.length}`);
+  // Logger.log(`Results: ${result.length} Fields: ${fields.length}`);
   return result;
 };
 
 const getData = request => {
-  Logger.log('Get Data...');
+  // Logger.log('Get Data...');
   const requestedFields = getFields().forIds(
     request.fields.map(field => {
       return field.name;
@@ -124,14 +124,14 @@ const getData = request => {
 
   try {
     const apiResponse = fetchDataFromApi();
-    Logger.log('API request...');
+    // Logger.log('API request...');
     const filteredResponse = normalizeResponse(request, apiResponse);
-    Logger.log('Filtered response...');
+    // Logger.log('Filtered response...');
     rows = getFormattedData(filteredResponse, requestedFields);
-    Logger.log('Formatted response...');
+    // Logger.log('Formatted response...');
   } catch (e) {
-    Logger.log('Error?');
-    Logger.log(e);
+    // Logger.log('Error?');
+    // Logger.log(e);
     cc.newUserError()
       .setDebugText(`Error fetching data from API. Exception details: ${e}`)
       .setText(
@@ -140,7 +140,7 @@ const getData = request => {
       .throwException();
   }
 
-  Logger.log(rows);
+  // Logger.log(rows);
 
   return {
     schema: requestedFields.build(),

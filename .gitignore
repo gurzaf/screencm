@@ -1,3 +1,4 @@
 node_modules/
 dist/
 AUTH.json
+SCREENS_API.json
