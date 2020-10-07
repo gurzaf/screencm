@@ -6,14 +6,16 @@
     "libraries": []
   },
   "dataStudio": {
-    "name": "Maclic Screens Data Studio Connector",
+    "name": "Maclic Screens Data Studio Connector 2020",
     "logoUrl": "https://camo.githubusercontent.com/61087035410aa65fb81efeffe2842d50767cfe20/68747470733a2f2f6d61636c69632e636f2f696d616765732f6170706c652d746f7563682d69636f6e2e706e67",
     "company": "Roldanillo Easy",
     "companyUrl": "https://roldanilloeasy.com",
     "addonUrl": "https://github.com/gurzaf/screencm#readme",
     "supportUrl": "https://github.com/gurzaf/screencm/issues",
-    "description": "Maclic Screens Analytics Data Studio Connector",
-    "authType": ["NONE"],
+    "description": "Maclic Screens Analytics Data Studio Connector 2020",
+    "authType": [
+      "NONE"
+    ],
     "templates": {
       "default": "fcdc4d91-a84b-45aa-b140-9e6300561e30"
     }
