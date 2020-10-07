@@ -1,7 +1,7 @@
 {
-  "name": "screencm",
-  "version": "0.0.1",
-  "description": "Maclic Screens Analytics Data Studio Connector",
+  "name": "screencm2020",
+  "version": "0.0.2",
+  "description": "Maclic Screens Analytics Data Studio Connector 2020",
   "author": {
     "name": "Julian Galvez",
     "email": "contact@roldanilloeasy.com",
@@ -25,7 +25,9 @@
     "apps-script"
   ],
   "dependencies": {
-    "crypto-js": "3.1.9-1"
+    "clasp": "^1.0.0",
+    "crypto-js": "3.1.9-1",
+    "global": "^4.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
